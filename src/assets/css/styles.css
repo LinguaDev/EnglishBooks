@@ -1,0 +1,173 @@
+/* ==================================== */
+/* 1. ESTILOS DEL HEADER Y MENÚ */
+/* ==================================== */
+.main-header {
+    background-color: #0056b3; /* Azul primario */
+    color: white;
+    padding: 10px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-logo a {
+    color: white;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.main-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex; /* Menú horizontal por defecto */
+}
+
+.main-nav li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    display: block;
+    transition: background-color 0.3s;
+}
+
+.main-nav li a:hover, .main-nav li a.active {
+    background-color: #004080;
+    border-radius: 4px;
+}
+
+/* Icono Hamburguesa (Oculto por defecto en escritorio) */
+.hamburger {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.8em;
+    cursor: pointer;
+}
+
+/* ==================================== */
+/* 2. ESTILOS DE LAS TARJETAS (BOOK-GRID) */
+/* ==================================== */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.book-card {
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background-color: #e6f7ff; /* Azul muy claro para encabezado */
+    padding: 15px 20px;
+}
+
+.book-card h3 {
+    color: #0056b3;
+    font-size: 1.4em;
+    margin: 0;
+    border: none;
+}
+
+.card-resources {
+    padding: 20px;
+    text-align: center;
+}
+
+.main-access {
+    display: block;
+    background-color: #008080; /* Teal para el botón principal */
+    color: white;
+    padding: 12px 25px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.resource-links {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 10px;
+    border-top: 1px dashed #eee;
+}
+
+.resource-link-small {
+    color: #666;
+    text-decoration: none;
+    font-size: 0.9em;
+    transition: color 0.3s;
+}
+
+.resource-link-small:hover {
+    color: #0056b3;
+}
+
+.teacher-link {
+    color: #8B4513; /* Color marrón para destacar recursos del profesor */
+}
+
+.card-footer {
+    background-color: #f9f9f9;
+    padding: 15px 20px;
+    font-size: 0.9em;
+    color: #666;
+    text-align: center;
+}
+
+/* ==================================== */
+/* 3. RESPONSIVE DESIGN (Móviles) */
+/* ==================================== */
+@media (max-width: 768px) {
+    .main-header {
+        padding: 10px 20px;
+    }
+    
+    .hamburger {
+        display: block; /* Mostrar hamburguesa */
+    }
+
+    .main-nav {
+        /* Ocultar el menú por defecto */
+        display: none; 
+        width: 100%;
+        position: absolute;
+        top: 60px; /* Debajo del header */
+        left: 0;
+        background-color: #004080; 
+        z-index: 1000;
+    }
+
+    .main-nav.active {
+        display: block; /* Mostrar cuando se activa con JS */
+    }
+
+    .main-nav ul {
+        flex-direction: column; /* Menú vertical en móviles */
+    }
+
+    .main-nav li {
+        border-bottom: 1px solid #0056b3;
+    }
+}
