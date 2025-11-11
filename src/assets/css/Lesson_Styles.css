@@ -1,181 +1,445 @@
-/* -- FUENTES Y RESET BÁSICO -- */
+/* PALETA FUTURISTA Y LUMINOSA:
+    -- Primary (Estructura, Títulos Principales): #4682B4 (SteelBlue - Azul Acerado)
+    -- Accent (Foco, Botones, Puntos Clave, Elementos interactivos): #00BFFF (DeepSkyBlue - Azul Cielo Profundo)
+    -- Secondary (Progreso, Énfasis Suave): #32CD32 (LimeGreen - Verde Lima)
+    -- Tertiary (Detalles, Brillo): #40E0D0 (Turquoise - Turquesa)
+    -- Background General: #F8F8F8 (Gris Muy Claro)
+    -- Background Card/Container: #FFFFFF (Blanco Puro)
+    -- Text Principal: #333333 (Gris Oscuro)
+    -- Text Metadatos: #777777 (Gris Medio)
+*/
+
+/* --- 0. GENERAL Y RESET --- */
 body {
-    font-family: 'Inter', 'Roboto', Arial, sans-serif; /* Fuentes limpias y modernas */
-    line-height: 1.6;
-    margin: 0 auto;
-    padding: 30px;
+    font-family: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif; /* Fuentes modernas y limpias */
+    line-height: 1.6; /* Interlineado generoso */
+    margin: 0;
+    background-color: #F8F8F8; /* Fondo muy claro */
+    color: #333333; /* Texto principal oscuro */
+    font-size: 1.05em; 
+}
+
+/* Interlineado y margen para el contenido principal */
+.lesson-main-content p, 
+.lesson-main-content ul, 
+.lesson-main-content ol,
+.lesson-main-content li,
+.card-content p,
+.card-content ul,
+.card-content li,
+.media-description p,
+.drill-instructions {
+    line-height: 1.6; 
+    margin-bottom: 0.8em; 
+}
+
+/* Estilo para cursivas (<i>) - Terminología y Sintaxis */
+i {
+    font-style: italic;
+    color: #4682B4; /* Azul Acerado para énfasis */
+}
+
+
+.container {
     max-width: 950px; 
-    background-color: #fcfcfc; /* Fondo casi blanco */
-    color: #333;
+    margin: 0 auto;
+    padding: 30px 20px;
+    background-color: #FFFFFF; /* Fondo de la tarjeta principal - blanco puro */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08); /* Sombra suave y moderna */
+    border-radius: 10px; /* Bordes redondeados */
 }
 
-/* -- ENCABEZADOS Y BREADCRUMB -- */
+/* --- 1. ENCABEZADO Y TÍTULOS --- */
 .lesson-header {
-    margin-bottom: 30px;
-    padding: 20px 0;
-    border-bottom: 5px solid #ff6347; /* Coral vibrante como acento principal */
+    margin-bottom: 35px; 
+    border-bottom: 3px solid #00BFFF; /* Separador brillante */
+    padding-bottom: 10px;
 }
-
-.breadcrumb {
-    font-size: 0.9em;
-    color: #888;
-    margin-bottom: 10px;
-}
-
-.breadcrumb a {
-    color: #00bcd4; /* Turquesa para enlaces de navegación */
-    text-decoration: none;
-}
-
-h1 {
-    color: #1a237e; /* Azul marino oscuro */
-    font-size: 2.5em;
+.header-top {
+    font-size: 0.8em;
+    color: #777777; /* Gris Metadato */
     margin-bottom: 5px;
 }
-
-h2 {
-    color: #ff6347; /* Coral */
-    font-size: 1.8em;
-    margin-top: 5px;
+.lesson-id {
+    font-weight: 700;
+    color: #40E0D0; /* Turquesa para la ID */
 }
-
-h3 {
-    color: #00bcd4; /* Turquesa */
-    border-left: 6px solid #00bcd4; 
-    padding-left: 15px;
-    margin-top: 30px;
-}
-
-h4 {
-    color: #1a237e;
-    font-size: 1.2em;
-}
-
-/* -- IMÁGENES -- */
-.full-width-image {
-    width: 100%;
-    height: auto;
-    margin: 20px 0;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.image-gallery {
-    display: flex;
-    justify-content: space-between;
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.image-gallery figure {
-    flex: 1;
-    text-align: center;
+.lesson-title {
+    color: #4682B4; /* Azul Acerado */
+    font-size: 2.8em; 
+    font-weight: 800;
     margin: 0;
+    text-shadow: 1px 1px 2px rgba(0, 191, 255, 0.1); /* Sombra sutil para "brillo" */
+}
+.lesson-level {
+    font-size: 0.9em;
+    color: #777777;
+    margin: 5px 0 0;
 }
 
-.image-gallery img {
-    width: 100%;
-    height: auto;
+.section-heading {
+    font-size: 1.7em; 
+    color: #4682B4; /* Azul Acerado */
+    font-weight: 700;
+    margin: 30px 0 15px;
+    position: relative;
+    padding-left: 20px;
+}
+.section-heading::before {
+    content: '/// ';
+    color: #00BFFF; /* Azul Cielo Profundo */
+    font-size: 0.8em;
+    position: absolute;
+    left: 0;
+    font-weight: normal;
+}
+.section-intro {
+    font-size: 1em;
+    color: #555555;
+    margin-bottom: 20px;
+}
+
+/* --- 2. TARJETAS DE INFORMACIÓN (ELEVACIÓN/CARD DESIGN) --- */
+.info-card {
+    display: flex;
+    align-items: flex-start;
+    padding: 20px; 
+    border-radius: 8px; 
+    margin: 20px 0;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06); /* Sombra elegante */
+    background-color: #FFFFFF; /* Fondo blanco */
+}
+.objective-card {
+    background-color: #E6F7E6; /* Fondo verde claro */
+    border-left: 6px solid #32CD32; /* Borde Verde Lima */
+}
+.grammar-explanation {
+    background-color: #E6F3F7; /* Fondo azul claro */
+    border-left: 6px solid #00BFFF;
+}
+.checklist-tip {
+    background-color: #FFF8E6; /* Fondo amarillo claro para atención */
+    border-left: 6px solid #FFD700; /* Amarillo Oro para alerta */
+    margin-bottom: 15px;
+}
+.card-icon {
+    font-size: 2em;
+    margin-right: 20px;
+    color: #00BFFF; /* DeepSkyBlue */
+}
+.card-title {
+    color: #4682B4; /* Azul Acerado */
+    font-size: 1.25em;
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+.info-card ul {
+    padding-left: 25px;
+    font-size: 1em;
+    color: #333333;
+}
+.info-card strong {
+    color: #00BFFF; /* DeepSkyBlue para enfoque */
+}
+
+/* --- 3. VOCABULARIO Y MEDIA --- */
+.vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); 
+    gap: 15px; 
+    margin: 15px 0;
+}
+.vocab-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px; 
+    background-color: #F8F8F8; /* Fondo suave */
+    border-left: 4px solid #32CD32;
     border-radius: 6px;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+    font-size: 0.95em;
+    font-weight: 600;
+    color: #333333;
+}
+.vocab-img {
+    width: 40px; 
+    height: 40px;
+    background-color: #D3EBF8; /* Fondo de icono suave */
+    border-radius: 50%;
+    flex-shrink: 0;
 }
 
-.image-gallery figcaption {
-    font-size: 0.85em;
-    color: #666;
-    margin-top: 8px;
+/* Estilos de Placeholders para imágenes/videos */
+.media-placeholder {
+    background-color: #E8E8E8; /* Gris claro */
+    border: 2px dashed #40E0D0; /* Borde dashed turquesa */
+    color: #777777;
+    text-align: center;
+    padding: 20px;
+    border-radius: 6px;
+    font-style: italic;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    box-sizing: border-box; 
+}
+.video-placeholder {
+    width: 250px; 
+    min-height: 130px;
+}
+.media-block {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+.media-description {
+    font-size: 0.95em;
+    color: #555555;
 }
 
-/* -- CAJA DE OBJETIVOS (GOAL BOX) -- */
-.goal-box {
-    background-color: #e0f7fa; /* Fondo turquesa muy claro */
-    border-left: 8px solid #00bcd4; /* Borde de contraste */
-    padding: 25px;
-    margin-bottom: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* Sombra suave */
+/* --- 4. REJILLA DE LECTURA/AUDICIÓN (DOS COLUMNAS) --- */
+.media-content-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr; 
+    gap: 25px;
+    align-items: start; 
+    margin-bottom: 25px;
+    padding: 15px;
+    background-color: #F8FCFF; /* Azul muy claro */
+    border-radius: 8px;
+    border: 1px solid #E0F0FF;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.03);
+}
+.reading-text-block {
+    background-color: #FFFFFF;
+    padding: 15px;
+    border-left: 4px solid #00BFFF; 
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    font-style: normal;
+}
+.listening-script-preview {
+    background-color: #FFFFFF;
+    padding: 15px;
+    border-left: 4px solid #32CD32; 
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    font-size: 0.95em;
+}
+.media-content-grid .image-placeholder {
+    width: 100%;
+    min-height: 180px; 
+    height: auto;
 }
 
-.goal-box h3 {
-    color: #1a237e;
-    border: none;
+
+/* --- 5. DRILLES (EJERCICIOS) --- */
+.drill-block {
+    background-color: #FFFFFF; 
+    padding: 20px; 
+    border: 1px solid #D1E5EF; /* Borde azul muy claro */
+    border-radius: 8px;
+    margin-top: 25px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+.drill-title {
+    color: #4682B4; /* Azul Acerado */
+    font-size: 1.4em;
+    border-bottom: 2px solid #E0E0E0;
+    padding-bottom: 5px;
+    margin-top: 0;
+    font-weight: 600;
+}
+/* ... otros estilos de drilles ... */
+
+/* Estilos de línea para impresión (Formato de Libro de Texto) */
+.single-column-list ol {
+    list-style-position: inside;
     padding-left: 0;
 }
+.single-column-list li {
+    margin-bottom: 20px; 
+    color: #333333; /* Texto de la lista oscuro */
+}
 
-/* -- CAJA DE MODELOS/REGLAS (I DO) -- */
-.model-box {
-    background-color: #fff8e1; /* Amarillo muy suave (vainilla) */
-    border: 1px solid #ffecb3;
-    padding: 15px;
-    margin: 20px 0;
-    border-radius: 8px;
+/* Línea de respuesta larga (Ejercicios de reescritura) */
+.answer-space-print {
+    margin-top: 5px;
+    padding-left: 20px;
+    font-size: 1em;
+}
+.answer-line-placeholder {
+    display: inline-block;
+    width: 95%; 
+    border-bottom: 1px solid #4682B4; /* Línea de escritura Azul Acerado */
+    height: 1px;
+}
+
+/* Línea de respuesta corta (Ejercicios de selección/opción) */
+.matching-space-right {
+    display: inline-block;
+    float: right; 
+    margin-right: 10px;
+    min-width: 30px; 
+}
+.answer-line-placeholder-short {
+    display: inline-block; 
+    width: 20px; 
+    border-bottom: 1px solid #4682B4; /* Línea Azul Acerado */
+    height: 1px;
+}
+/* ... estilos de emparejamiento ... */
+
+
+/* Área de texto de escritura (Mantiene el mismo diseño pero ajustado al tema claro) */
+.writing-area {
+    width: 98%;
+    min-height: 150px; 
+    font-size: 1em;
+    padding: 12px;
+    border: 2px solid #D1E5EF; /* Borde más claro */
+    border-radius: 6px;
+    background-color: #FFFFFF;
+    transition: border-color 0.3s;
+    color: #333333;
+}
+.writing-area:focus {
+    border-color: #00BFFF; /* DeepSkyBlue al enfocar */
+    outline: none;
+}
+/* Bloque de diálogo para speaking activity */
+.speaking-activity blockquote {
+    background-color: #E6F3F7; /* Fondo suave azul claro */
+    border-left: 4px solid #00BFFF;
+    padding: 10px 15px;
+    margin: 15px 0;
+    border-radius: 4px;
     font-style: italic;
-    font-weight: 500;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    font-size: 0.95em;
+    color: #333333;
 }
 
-/* -- TABLAS DE GRAMÁTICA -- */
-.table-container table {
-    width: 100%;
-    border-collapse: separate; 
-    border-spacing: 0;
-    margin: 20px 0;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+/* --- 6. NAVEGACIÓN FUTURISTA CLARA --- */
+.nav-minimal {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 25px 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #E0E0E0;
 }
-
-.table-container th, .table-container td {
-    padding: 15px;
-    text-align: left;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.table-container th {
-    background-color: #ff6347; /* Coral para encabezados */
-    color: white;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-.table-container tr:nth-child(even) {
-    background-color: #f7f7f7;
-}
-
-/* -- CAJA DE EJERCICIOS (WE DO / YOU DO) -- */
-.exercise-box {
-    background-color: #ffffff; 
-    border: 2px solid #00bcd4; 
-    padding: 25px;
-    margin-top: 30px;
-    border-radius: 10px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-}
-
-.exercise-box h4 {
-    color: #1a237e;
-    border-bottom: 2px solid #ff6347; 
-    padding-bottom: 8px;
-}
-
-/* -- BOTÓN DE ACCIÓN FINAL -- */
-.next-step-button {
-    display: block;
-    width: 100%;
-    max-width: 300px;
-    margin: 40px auto;
-    padding: 15px 30px;
-    background-color: #ff6347; 
-    color: white;
-    text-align: center;
+.nav-btn {
     text-decoration: none;
-    font-weight: bold;
-    border-radius: 50px; 
-    transition: background-color 0.3s, transform 0.3s;
-    box-shadow: 0 5px 15px rgba(255, 99, 71, 0.5);
+    font-size: 0.9em;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 4px;
+    color: #4682B4; /* Azul Acerado */
+    background-color: #F0F8FF; /* Fondo azul muy claro */
+    border: 1px solid #D1E5EF; 
+    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+}
+.next-lesson {
+    border: 1px solid #32CD32; /* Borde Verde Lima */
+    color: #32CD32;
+}
+.next-lesson:hover {
+    background-color: #32CD32; 
+    color: #FFFFFF; /* Texto blanco al hacer hover */
+    box-shadow: 0 0 8px rgba(50, 205, 50, 0.4);
+}
+.nav-btn:hover {
+    background-color: #00BFFF; 
+    color: #FFFFFF;
+    box-shadow: 0 0 8px rgba(0, 191, 255, 0.4);
+    border-color: #00BFFF;
 }
 
-.next-step-button:hover {
-    background-color: #e55338;
-    transform: translateY(-2px);
+
+/* --- 7. PIE DE PÁGINA Y OTROS --- */
+.lesson-footer {
+    text-align: center;
+    font-size: 0.85em;
+    color: #777777;
+    margin-top: 30px;
+    padding-top: 15px;
+    border-top: 1px solid #E0E0E0;
+}
+
+
+/* --- 8. ESTILOS DE TABLA FUTURISTAS CLAROS --- */
+
+/* Contenedor de tabla: Borde suave y sombra sutil */
+.grammar-table, 
+.assessment-table {
+    border: 1px solid #E0E0E0; 
+    border-radius: 8px;
+    overflow: hidden; 
+    margin: 20px 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); 
+}
+
+.grammar-table table, 
+.assessment-table table {
+    width: 100%;
+    border-collapse: collapse; 
+    margin: 0; 
+    font-size: 0.95em;
+    table-layout: fixed; 
+}
+
+/* Cabeceras de la tabla (TH) - Fondo Azul Acerado, texto blanco */
+.grammar-table th, 
+.assessment-table th {
+    background-color: #4682B4; /* Azul Acerado */
+    color: #FFFFFF; 
+    font-weight: 700;
+    text-align: center; 
+    padding: 12px 10px;
+    border: none;
+}
+
+/* Celdas del cuerpo de la tabla (TD) */
+.grammar-table td, 
+.assessment-table td {
+    padding: 10px 15px; 
+    color: #333333; 
+    text-align: left;
+    border-bottom: 1px solid #EEEEEE; /* Separador muy sutil */
+    border-right: 1px solid #EEEEEE; 
+    vertical-align: top;
+    line-height: 1.4;
+    background-color: #FFFFFF; /* Fondo blanco */
+}
+
+/* Color de fila alterna */
+.grammar-table tbody tr:nth-child(even) {
+    background-color: #F8F8F8; /* Gris muy claro */
+}
+
+
+/* Estilo de autoevaluación (Assessment Table) */
+
+/* Filas pares para assessment en un color verde pastel */
+.assessment-table tbody tr:nth-child(even) {
+    background-color: #E6F7E6; /* Tonalidad sutil de Verde Lima */
+}
+
+/* Estilo para las celdas de selección de la tabla de autoevaluación (X) */
+.assessment-table td:nth-child(n+2) {
+    text-align: center;
+    width: 13%; 
+    font-weight: 700;
+    color: #00BFFF; /* Color DeepSkyBlue para la "X" */
+}
+
+/* Limpieza de bordes finales */
+.grammar-table td:last-child,
+.assessment-table td:last-child {
+    border-right: none;
+}
+.grammar-table tbody tr:last-child td,
+.assessment-table tbody tr:last-child td {
+    border-bottom: none;
 }
