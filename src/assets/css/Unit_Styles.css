@@ -1,148 +1,181 @@
-/* Colores clave: Azul Marino (#1a237e), Coral (#ff6347), Turquesa (#00bcd4) */
-
-/* --- ENCABEZADO Y TÍTULOS --- */
-.unit-intro-header {
-    text-align: center;
-    padding: 30px 0;
-    margin-bottom: 30px; /* Aumentado ligeramente */
-    border-bottom: 4px solid #ff6347; /* Línea de división coral más sólida */
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #f9fbfc;
+  color: #333;
+  margin: 0;
+  padding: 0;
 }
 
-.unit-number-title {
-    color: #1a237e;
-    font-size: 3em; /* Un poco más grande para impacto */
-    margin-bottom: 8px;
-    font-weight: 700;
+/* Encabezado */
+.unit-header {
+  text-align: center;
+  padding: 30px 20px;
+  border-bottom: 4px solid #ff6347;
+  background-color: #f0f4ff;
 }
 
-.unit-intro-header h2 {
-    color: #00bcd4;
-    font-size: 1.5em;
-    font-weight: 500;
+.breadcrumb {
+  font-size: 0.9em;
+  margin-bottom: 15px;
+  color: #555;
 }
 
-/* --- CAJA DE METAS (GOAL BOX) --- */
-.unit-goals-box {
-    background-color: #e0f7fa; /* Fondo turquesa muy claro */
-    border-radius: 12px;
-    padding: 35px; /* Más padding */
-    margin: 40px 0;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15); /* Sombra más profunda */
+.breadcrumb a {
+  color: #ff6347;
+  text-decoration: none;
 }
 
-.unit-goals-box h3 {
-    text-align: center;
-    color: #ff6347;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 30px;
+.breadcrumb span {
+  color: #1a237e;
+  font-weight: 600;
+}
+
+.unit-title {
+  color: #1a237e;
+  font-size: 3em;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.unit-subtitle {
+  color: #00bcd4;
+  font-size: 1.5em;
+  font-weight: 500;
+}
+
+/* Banner */
+.unit-banner img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 40px;
+}
+
+/* Objetivos */
+.unit-goals {
+  background-color: #e0f7fa;
+  border-radius: 12px;
+  padding: 35px 25px;
+  margin: 40px auto;
+  max-width: 1000px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.unit-goals h3 {
+  text-align: center;
+  color: #ff6347;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 30px;
+  font-size: 1.4em;
 }
 
 .goals-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Min ancho aumentado */
-    gap: 25px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
 }
 
 .goal-item {
-    background-color: white;
-    padding: 20px;
-    border-radius: 10px;
-    border-left: 6px solid #00bcd4; /* Borde más grueso */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* Sombra suave y limpia */
-    font-weight: 500;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 6px solid #00bcd4;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  font-weight: 500;
 }
 
-/* --- SEPARADOR DE SECCIONES --- */
-.section-separator {
-    height: 1px;
-    background-color: #ddd;
-    margin: 40px auto;
-    width: 60%;
+/* Separador */
+.separator {
+  height: 1px;
+  background-color: #ddd;
+  margin: 40px auto;
+  width: 60%;
 }
 
-/* --- RESUMEN DE LECCIONES (MAPA - La Mejora) --- */
-.lesson-summary h2 {
-    color: #1a237e;
-    text-align: center;
-    margin-top: 50px;
-    margin-bottom: 30px;
-    font-size: 2em;
+/* Lecciones */
+.unit-lessons {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
-.lesson-map {
-    /* Transformamos el mapa de una lista a una CUADRÍCULA DE TARJETAS */
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    padding: 20px 0;
+.unit-lessons h2 {
+  color: #1a237e;
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2em;
 }
 
-.map-step {
-    /* Ahora los pasos son tarjetas clickable (asumiendo que es un <a>) */
-    display: flex; /* Para controlar el contenido interno */
-    flex-direction: column;
-    background-color: #ffffff;
-    padding: 25px;
-    border-radius: 12px;
-    text-decoration: none;
-    color: #333;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-    border-bottom: 5px solid #ff6347; /* Acento Coral en la base */
+.lesson-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
 }
 
-.map-step:hover {
-    transform: translateY(-8px); /* Efecto 3D sutil */
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
-    border-bottom-color: #00bcd4; /* Cambio de color al hacer hover */
+.lesson-card {
+  background-color: #ffffff;
+  padding: 25px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #333;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  border-bottom: 5px solid #ff6347;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
-.map-step h4 {
-    color: #1a237e;
-    font-size: 1.3em;
-    margin-top: 0;
-    margin-bottom: 10px;
+.lesson-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+  border-bottom-color: #00bcd4;
 }
 
-.map-step p {
-    color: #555;
-    font-size: 0.95em;
-    flex-grow: 1; /* Asegura que todas las tarjetas tengan altura similar si el contenido lo permite */
+.lesson-card h4 {
+  color: #1a237e;
+  font-size: 1.3em;
+  margin-bottom: 10px;
 }
 
-/* --- BOTONES DE ACCIÓN --- */
-.start-unit-button, .preview-test-button {
-    display: block;
-    width: 100%;
-    max-width: 450px; /* Un poco más anchos */
-    margin: 25px auto;
-    padding: 16px 30px;
-    text-align: center;
-    text-decoration: none;
-    font-weight: 700;
-    border-radius: 50px; 
-    transition: all 0.3s;
-    text-transform: uppercase;
+.lesson-card p {
+  color: #555;
+  font-size: 0.95em;
 }
 
-.start-unit-button {
-    background-color: #ff6347;
-    color: white;
-    box-shadow: 0 6px 15px rgba(255, 99, 71, 0.6);
+/* Botones */
+.unit-buttons {
+  margin-top: 40px;
+  text-align: center;
 }
 
-.start-unit-button:hover {
-    background-color: #e55338;
+.btn {
+  display: inline-block;
+  margin: 15px;
+  padding: 16px 30px;
+  font-weight: 700;
+  border-radius: 50px;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s;
 }
 
-.preview-test-button {
-    background-color: #fff;
-    color: #00bcd4;
-    border: 2px solid #00bcd4;
+.start-btn {
+  background-color: #ff6347;
+  color: white;
+  box-shadow: 0 6px 15px rgba(255, 99, 71, 0.6);
 }
 
-.preview-test-button:hover {
-    background-color: #e0f7fa;
-    color: #1a237e;
+.start-btn:hover {
+  background-color: #e55338;
+}
+
+.test-btn {
+  background-color: #fff;
+  color: #00bcd4;
+  border: 2px solid #00bcd4;
+}
+
+.test-btn:hover {
+  background-color: #e0f7fa;
+  color: #1a237e;
 }
