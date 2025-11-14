@@ -3,60 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EnglishBooks</title>
-    
-    <meta http-equiv="refresh" content="0; url=src/src_Index.html">
-
+    <title>English Books 7th-11th Grade</title>
+    <!-- NOTA: He quitado el enlace a Tailwind para usar tu CSS externo y estilos simples -->
+    <link rel="stylesheet" href="assets/css/styles.css"> 
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f7f7f7;
-            text-align: center;
-            padding-top: 50px;
+        /* Estilos básicos para los elementos de Firebase que app.js necesita controlar */
+        #auth-form {
+            padding: 20px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
         }
-        .loader {
-            color: #0056b3; /* Azul primario */
+        #auth-form input {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            border-radius: 4px;
+        }
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .auth-buttons button {
+            flex-grow: 1;
+            padding: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+        }
+        #submit-auth { background-color: #0056b3; color: white; }
+        #submit-auth-register { background-color: #28a745; color: white; }
+
+        #app-content {
+            padding: 20px;
+            border: 1px solid #0056b3;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            background-color: #e6f0ff;
+        }
+        #progress-output {
+            background-color: white;
+            padding: 10px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+            font-size: 0.9em;
+            overflow-x: auto;
         }
     </style>
 </head>
 <body>
-    <div class="loader">
-        <h1>Cargando el Portal Educativo...</h1>
-        <p>Si la página no se carga automáticamente, haz clic <a href="src/src_Index.html">aquí</a>.</p>
-    </div>
-<!-- Scripts de Firebase. Coloca esto en la sección <head> o <body> -->
 
-<!-- 1. Carga de las librerías de Firebase (v9.6.1 compat) -->
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <header class="main-header">
+        <div class="header-logo">
+            <a href="index.html">Let´s do it!</a>
+        </div>
+        
+        <button class="hamburger" aria-label="Abrir menú de navegación">
+            &#9776; 
+        </button>
 
-<!-- 2. Tu Configuración Única y la Inicialización de los Servicios -->
-<script>
-  // Tu objeto de configuración único
-  const firebaseConfig = {
-    apiKey: "AIzaSyDKgyH3lrvfDKZDVWft9TYFZPX-uJW3-B4",
-    authDomain: "jpenglishbooks.firebaseapp.com",
-    projectId: "jpenglishbooks",
-    storageBucket: "jpenglishbooks.firebasestorage.app",
-    messagingSenderId: "262750459498",
-    appId: "1:262750459498:web:bcf912fe805bb1ad981c13",
-    measurementId: "G-0SMW06BBTF"
-  };
+        <nav class="main-nav" id="navMenu">
+            <ul>
+                <li><a href="index.html" class="active">Inicio</a></li>
+                <li><a href="#">Recursos Adicionales</a></li>
+                <li><a href="#">Exámenes de Práctica</a></li>
+                <li><a href="#">Guía para el Profesor</a></li>
+                <li><a href="#">Buy Books</a></li>
+            </ul>
+        </nav>
+    </header>
 
-  // Inicializa la aplicación Firebase
-  const app = firebase.initializeApp(firebaseConfig);
+    <main class="container">
+        <h1>Selecciona tu Nivel y Recursos</h1>
+        <h2>Accede a todo el material para comenzar el aprendizaje.</h2>
+        
+        <!-- === INICIO DE LA INTERFAZ DE AUTENTICACIÓN === -->
+        <p id="auth-message" style="margin-bottom: 20px; font-weight: bold; color: #333;">Cargando estado...</p>
 
-  // Expone los servicios de Autenticación y Base de Datos (para usarlos en app.js)
-  const auth = firebase.auth();
-  const db = firebase.firestore();
+        <!-- PANTALLA DE AUTENTICACIÓN (LOGIN/REGISTRO) - Controlada por app.js -->
+        <div id="auth-form" style="display: none;">
+            <h3 style="margin-top: 0; color: #0056b3;">Acceso de Estudiantes</h3>
+            <input type="email" id="auth-email" placeholder="Correo electrónico">
+            <input type="password" id="auth-password" placeholder="Contraseña (mín. 6 caracteres)">
+            
+            <div class="auth-buttons">
+                <!-- El botón de login es el principal, usado para ambas acciones -->
+                <button id="submit-auth" value="login" onclick="document.getElementById('auth-action').value='login'">
+                    Iniciar Sesión
+                </button>
+                <!-- Este botón cambia la acción a 'register' y simula el click en submit-auth -->
+                <button id="submit-auth-register" onclick="document.getElementById('auth-action').value='register'; document.getElementById('submit-auth').click();">
+                    Registrarse
+                </button>
+            </div>
+            <!-- Campo oculto que indica la acción a app.js -->
+            <input type="hidden" id="auth-action" value="login"> 
+        </div>
 
-  // Opcional: Para ver logs de depuración si encuentras problemas (útil para desarrollo)
-  firebase.firestore().setLogLevel('debug');
-</script>
+        <!-- PANTALLA DE LA APLICACIÓN (PROGRESO Y LOGOUT) - Controlada por app.js -->
+        <div id="app-content" style="display: none;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #0056b3; padding-bottom: 10px; margin-bottom: 15px;">
+                <h3 style="margin: 0; color: #0056b3;">Tu Panel de Progreso</h3>
+                <button id="logout-btn" style="background-color: #dc3545; color: white; padding: 5px 10px;">Cerrar Sesión</button>
+            </div>
+            
+            <p>Avance Actual (Libro 1):</p>
+            <pre id="progress-output">Cargando datos...</pre>
 
-<!-- 3. Asegúrate de que tu archivo de lógica (app.js) se cargue DESPUÉS de la inicialización -->
-<!-- Si ya tienes esta línea en tu HTML, no la dupliques, solo confirma que esté al final. -->
-<script src="app.js"></script>
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px dashed #ccc;">
+                <h4 style="margin-top: 0;">Guardar Avance (Simulación)</h4>
+                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                    <input type="number" id="unit-input" placeholder="Unidad (Ej: 3)" min="1" style="flex-grow: 1;">
+                    <input type="number" id="exercise-input" placeholder="Ejercicio (Ej: 5)" min="0" style="flex-grow: 1;">
+                </div>
+                <button id="save-progress-btn" style="width: 100%; background-color: #28a745; color: white; padding: 10px;">
+                    Guardar Nuevo Avance
+                </button>
+            </div>
+        </div>
+        <!-- === FIN DE LA INTERFAZ DE AUTENTICACIÓN === -->
+
+        <!-- BOOK GRID (Tu contenido original) -->
+        <div class="book-grid">
+            
+            <div class="book-card level-1">
+                <div class="card-header">
+                    <h3>Libro 1: 7th Grade</h3>
+                </div>
+                
+                <div class="card-resources">
+                    <a href="../src/Student_Books/7th Grade/Book_Index.html" class="resource-btn main-access">Student Book</a>
+                    
+                    <div class="resource-links">
+                        <a href="#" class="resource-link-small">Workbook (Práctica)</a>
+                        <a href="#" class="resource-link-small teacher-link">Teacher Book (Guía)</a>
+                    </div>
+                </div>
+                
+                <div class="card-footer">
+                    <p>Focus: Construcción de la base lingüística para describir la vida personal y rutinas diarias.</p>
+                </div>
+            </div>
+            
+            <div class="book-card level-2">
+                <div class="card-header">
+                    <h3>Libro 2: 8th Grade</h3>
+                </div>
+                <div class="card-resources">
+                    <a href="../src/Student_Books/8th Grade/Book_Index.html" class="resource-btn main-access">Student Book</a>
+                    <div class="resource-links">
+                        <a href="#" class="resource-link-small">Workbook (Práctica)</a>
+                        <a href="#" class="resource-link-small teacher-link">Teacher Book (Guía)</a>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <p>Focus: Desarrollo de la comunicación simple sobre el pasado, el futuro y el entorno inmediato.</p>
+                </div>
+            </div>
+            <div class="book-card level-3">
+                <div class="card-header">
+                    <h3>Libro 3: 9th Grade</h3>
+                </div>
+                <div class="card-resources">
+                    <a href="../src/Student_Books/9th Grade/Book_Index.html" class="resource-btn main-access">Student Book</a>
+                    <div class="resource-links">
+                        <a href="#" class="resource-link-small">Workbook (Práctica)</a>
+                        <a href="#" class="resource-link-small teacher-link">Teacher Book (Guía)</a>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <p>Focus: Adquisición de fluidez y precisión para expresar opiniones y posibilidades (Nivel Intermedio).</p>
+                </div>
+            </div>
+
+            <div class="book-card level-4">
+                <div class="card-header">
+                    <h3>Libro 4: 10th Grade</h3>
+                </div>
+                <div class="card-resources">
+                    <a href="../src/Student_Books/10th Grade/Book_Index.html" class="resource-btn main-access">Student Book</a>
+                    <div class="resource-links">
+                        <a href="#" class="resource-link-small">Workbook (Práctica)</a>
+                        <a href="#" class="resource-link-small teacher-link">Teacher Book (Guía)</a>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <p>Focus: Dominio de estructuras complejas para argumentar y analizar información (Nivel Intermedio Alto).</p>
+                </div>
+            </div>
+
+            <div class="book-card level-5">
+                <div class="card-header">
+                    <h3>Libro 5: 11th Grade</h3>
+                </div>
+                <div class="card-resources">
+                    <a href="../src/Student_Books/11th Grade/index.html" class="resource-btn main-access">Student Book</a>
+                    <div class="resource-links">
+                        <a href="#" class="resource-link-small">Workbook (Práctica)</a>
+                        <a href="#" class="resource-link-small teacher-link">Teacher Book (Guía)</a>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <p>Focus: Consolidación de la competencia comunicativa y preparación para entornos académicos y profesionales.</p>
+                </div>
+            </div>
+        </div>
+            
+    </main>
+
+    <script src="assets/js/nav_scripts.js"></script>
+    
+    <!-- === INICIALIZACIÓN Y LÓGICA DE FIREBASE === -->
+    
+    <!-- 1. Carga de las librerías de Firebase (v9.6.1 compat) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+    <!-- 2. Tu Configuración Única y la Inicialización de los Servicios -->
+    <script>
+      // Tu objeto de configuración único
+      const firebaseConfig = {
+        apiKey: "AIzaSyDKgyH3lrvfDKZDVWft9TYFZPX-uJW3-B4",
+        authDomain: "jpenglishbooks.firebaseapp.com",
+        projectId: "jpenglishbooks",
+        storageBucket: "jpenglishbooks.firebasestorage.app",
+        messagingSenderId: "262750459498",
+        appId: "1:262750459498:web:bcf912fe805bb1ad981c13",
+        measurementId: "G-0SMW06BBTF"
+      };
+
+      // Inicializa la aplicación Firebase
+      const app = firebase.initializeApp(firebaseConfig);
+
+      // Expone los servicios de Autenticación y Base de Datos (para usarlos en app.js)
+      const auth = firebase.auth();
+      const db = firebase.firestore();
+
+      // Opcional: Para ver logs de depuración si encuentras problemas (útil para desarrollo)
+      firebase.firestore().setLogLevel('debug');
+    </script>
+
+    <!-- 3. Asegúrate de que tu archivo de lógica (app.js) se cargue DESPUÉS de la inicialización -->
+    <script src="app.js"></script>
+    <!-- === FIN DE LA INICIALIZACIÓN Y LÓGICA DE FIREBASE === -->
 </body>
 </html>
