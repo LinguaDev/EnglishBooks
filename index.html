@@ -23,6 +23,40 @@
     <div class="loader">
         <h1>Cargando el Portal Educativo...</h1>
         <p>Si la página no se carga automáticamente, haz clic <a href="src/src_Index.html">aquí</a>.</p>
-        </div>
+    </div>
+<!-- Scripts de Firebase. Coloca esto en la sección <head> o <body> -->
+
+<!-- 1. Carga de las librerías de Firebase (v9.6.1 compat) -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+
+<!-- 2. Tu Configuración Única y la Inicialización de los Servicios -->
+<script>
+  // Tu objeto de configuración único
+  const firebaseConfig = {
+    apiKey: "AIzaSyDKgyH3lrvfDKZDVWft9TYFZPX-uJW3-B4",
+    authDomain: "jpenglishbooks.firebaseapp.com",
+    projectId: "jpenglishbooks",
+    storageBucket: "jpenglishbooks.firebasestorage.app",
+    messagingSenderId: "262750459498",
+    appId: "1:262750459498:web:bcf912fe805bb1ad981c13",
+    measurementId: "G-0SMW06BBTF"
+  };
+
+  // Inicializa la aplicación Firebase
+  const app = firebase.initializeApp(firebaseConfig);
+
+  // Expone los servicios de Autenticación y Base de Datos (para usarlos en app.js)
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  // Opcional: Para ver logs de depuración si encuentras problemas (útil para desarrollo)
+  firebase.firestore().setLogLevel('debug');
+</script>
+
+<!-- 3. Asegúrate de que tu archivo de lógica (app.js) se cargue DESPUÉS de la inicialización -->
+<!-- Si ya tienes esta línea en tu HTML, no la dupliques, solo confirma que esté al final. -->
+<script src="app.js"></script>
 </body>
 </html>
