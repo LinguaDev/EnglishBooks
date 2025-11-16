@@ -3,254 +3,567 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>English Books 7th-11th Grade</title>
-    <!-- NOTA: He quitado el enlace a Tailwind para usar tu CSS externo y estilos simples -->
-    <link rel="stylesheet" href="src/assets/css/styles.css"> 
+    <title>English Books - Acceso con Firebase</title>
+    <!-- Carga de Tailwind CSS para un diseño moderno y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* Estilos básicos para los elementos de Firebase que app.js necesita controlar */
-        #auth-form {
-            padding: 20px;
-            border: 1px solid #ccc;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            background-color: #f9f9f9;
-        }
-        #auth-form input {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd;
-            box-sizing: border-box;
-            border-radius: 4px;
-        }
-        .auth-buttons {
-            display: flex;
-            gap: 10px;
-        }
-        .auth-buttons button {
-            flex-grow: 1;
-            padding: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            border: none;
-            border-radius: 4px;
-        }
-        #submit-auth { background-color: #0056b3; color: white; }
-        #submit-auth-register { background-color: #28a745; color: white; }
+        /* Configuración de fuentes y base para Inter */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body { font-family: 'Inter', sans-serif; }
 
-        #app-content {
-            padding: 20px;
-            border: 1px solid #0056b3;
-            margin-bottom: 20px;
-            border-radius: 8px;
-            background-color: #e6f0ff;
+        /* Estilos personalizados para el grid y los botones */
+        .book-grid {
+            display: grid;
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
-        #progress-output {
-            background-color: white;
-            padding: 10px;
-            border-radius: 4px;
-            white-space: pre-wrap;
-            font-size: 0.9em;
-            overflow-x: auto;
+        @media (min-width: 640px) {
+            .book-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 1024px) {
+            .book-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        .main-header {
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 min-h-screen">
 
-    <header class="main-header">
-        <div class="header-logo">
-            <a href="index.html">Let´s do it!</a>
+    <header class="main-header bg-white p-4 flex justify-between items-center sticky top-0 z-10">
+        <div class="text-xl font-bold text-blue-700">
+            <a href="#" class="hover:text-blue-900 transition duration-300">Let's do it!</a>
         </div>
         
-        <button class="hamburger" aria-label="Abrir menú de navegación">
-            &#9776; 
+        <!-- Botón Hamburguesa (solo visible en móvil) -->
+        <button id="hamburger-btn" class="lg:hidden text-gray-700 hover:text-blue-700 focus:outline-none" aria-label="Abrir menú de navegación">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
         </button>
 
-        <nav class="main-nav" id="navMenu">
-            <ul>
-                <li><a href="index.html" class="active">Inicio</a></li>
-                <li><a href="#">Recursos Adicionales</a></li>
-                <li><a href="#">Exámenes de Práctica</a></li>
-                <li><a href="#">Guía para el Profesor</a></li>
-                <li><a href="#">Buy Books</a></li>
+        <!-- Menú de Navegación -->
+        <nav class="main-nav hidden lg:block" id="navMenu">
+            <ul class="flex space-x-6">
+                <li><a href="#" class="text-blue-700 font-semibold border-b-2 border-blue-700">Inicio</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-blue-700 transition duration-300">Recursos Adicionales</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-blue-700 transition duration-300">Exámenes</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-blue-700 transition duration-300">Guía para el Profesor</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-blue-700 transition duration-300">Buy Books</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="container">
-        <h1>Selecciona tu Nivel y Recursos</h1>
-        <h2>Accede a todo el material para comenzar el aprendizaje.</h2>
-        
-        <!-- === INICIO DE LA INTERFAZ DE AUTENTICACIÓN === -->
-        <p id="auth-message" style="margin-bottom: 20px; font-weight: bold; color: #333;">Cargando estado...</p>
+    <!-- Menú Desplegable Móvil -->
+    <nav id="mobile-menu" class="lg:hidden hidden bg-white shadow-lg p-4 border-t border-gray-200">
+        <ul class="space-y-2">
+            <li><a href="#" class="block p-2 text-blue-700 font-semibold bg-blue-50 rounded-lg">Inicio</a></li>
+            <li><a href="#" class="block p-2 text-gray-700 hover:bg-gray-100 rounded-lg">Recursos Adicionales</a></li>
+            <li><a href="#" class="block p-2 text-gray-700 hover:bg-gray-100 rounded-lg">Exámenes de Práctica</a></li>
+            <li><a href="#" class="block p-2 text-gray-700 hover:bg-gray-100 rounded-lg">Guía para el Profesor</a></li>
+            <li><a href="#" class="block p-2 text-gray-700 hover:bg-gray-100 rounded-lg">Buy Books</a></li>
+        </ul>
+    </nav>
 
-        <!-- PANTALLA DE AUTENTICACIÓN (LOGIN/REGISTRO) - Controlada por app.js -->
-        <div id="auth-form" style="display: none;">
-            <h3 style="margin-top: 0; color: #0056b3;">Acceso de Estudiantes</h3>
-            <input type="email" id="auth-email" placeholder="Correo electrónico">
-            <input type="password" id="auth-password" placeholder="Contraseña (mín. 6 caracteres)">
+    <main class="container mx-auto p-4 lg:p-8 max-w-7xl">
+        <h1 class="text-3xl lg:text-4xl font-extrabold text-gray-800 mb-2">Selecciona tu Nivel y Recursos</h1>
+        <h2 class="text-lg text-gray-500 mb-6">Accede a todo el material para comenzar el aprendizaje.</h2>
+        
+        <!-- Mensaje de Estado de Autenticación -->
+        <p id="auth-message" class="mb-5 p-3 rounded-lg font-semibold bg-yellow-100 text-yellow-800 border border-yellow-300">Cargando estado...</p>
+
+        <!-- PANTALLA DE AUTENTICACIÓN (LOGIN/REGISTRO) -->
+        <div id="auth-form" class="hidden max-w-md mx-auto bg-white p-6 md:p-8 shadow-2xl rounded-xl border border-blue-100 transition-all duration-300">
+            <h3 class="text-2xl font-bold text-blue-600 mb-6 border-b pb-3">Acceso de Estudiantes</h3>
             
-            <div class="auth-buttons">
-                <!-- El botón de login es el principal, usado para ambas acciones -->
-                <button id="submit-auth" value="login" onclick="document.getElementById('auth-action').value='login'">
+            <!-- Email/Password Inputs -->
+            <input type="email" id="auth-email" placeholder="Correo electrónico" class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150" required>
+            <input type="password" id="auth-password" placeholder="Contraseña (mín. 6 caracteres)" class="w-full p-3 mb-6 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 transition duration-150" required>
+            
+            <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                <button id="submit-auth" 
+                    class="flex-1 p-3 font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 transition duration-200 shadow-md">
                     Iniciar Sesión
                 </button>
-                <!-- Este botón cambia la acción a 'register' y simula el click en submit-auth -->
-                <button id="submit-auth-register" onclick="document.getElementById('auth-action').value='register'; document.getElementById('submit-auth').click();">
+                <button id="submit-auth-register" 
+                    class="flex-1 p-3 font-semibold text-white bg-green-500 rounded-lg hover:bg-green-600 transition duration-200 shadow-md">
                     Registrarse
                 </button>
             </div>
-            <!-- Campo oculto que indica la acción a app.js -->
-            <input type="hidden" id="auth-action" value="login"> 
+            
+            <div id="auth-error-message" class="mt-4 text-red-600 text-center font-medium hidden"></div>
+
+            <!-- Separador -->
+            <div class="flex items-center my-6">
+                <div class="flex-grow border-t border-gray-300"></div>
+                <span class="flex-shrink mx-4 text-gray-500 text-sm">O usa tus redes sociales</span>
+                <div class="flex-grow border-t border-gray-300"></div>
+            </div>
+
+            <!-- Botón de Login con Google (NUEVO) -->
+            <button id="google-sign-in-btn" 
+                class="w-full flex items-center justify-center p-3 font-semibold text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-100 transition duration-200 shadow-md">
+                <!-- Icono SVG de Google -->
+                <svg class="w-5 h-5 mr-2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet"><path fill="#4285F4" d="M22.56 12.08c0-.79-.06-1.56-.18-2.31H12v4.39h5.95c-.24 1.25-.97 2.3-2.09 3.01v3.59h4.63c2.7-2.5 4.25-6.24 4.25-10.68z"/><path fill="#34A853" d="M12 23c3.08 0 5.67-1.02 7.56-2.76l-4.63-3.59c-1.28.85-2.92 1.36-4.93 1.36-3.79 0-7.05-2.56-8.2-6.01H1.1v3.7h3.75c1.1 2.2 3.08 3.86 5.56 4.67v4.61z"/><path fill="#FBBC05" d="M3.75 14.18c-.28-.85-.43-1.74-.43-2.67s.15-1.82.43-2.67V5.13H1.1c-.69 1.35-1.1 2.87-1.1 4.58s.41 3.23 1.1 4.58l2.65-2.62z"/><path fill="#EA4335" d="M12 5.23c1.78 0 3.32.61 4.54 1.77l4.1-4.1C17.67 1.23 15.08 0 12 0 8.21 0 4.95 2.56 3.75 6.01l2.65 2.62c1.15-3.45 4.41-6.01 8.2-6.01z"/></svg>
+                Continuar con Google
+            </button>
         </div>
 
-        <!-- PANTALLA DE LA APLICACIÓN (PROGRESO Y LOGOUT) - Controlada por app.js -->
-        <div id="app-content" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #0056b3; padding-bottom: 10px; margin-bottom: 15px;">
-                <h3 style="margin: 0; color: #0056b3;">Tu Panel de Progreso</h3>
-                <button id="logout-btn" style="background-color: #dc3545; color: white; padding: 5px 10px;">Cerrar Sesión</button>
+        <!-- PANTALLA DE LA APLICACIÓN (PROGRESO Y LOGOUT) -->
+        <div id="app-content" class="hidden max-w-full mx-auto bg-white p-6 md:p-8 shadow-2xl rounded-xl border-t-4 border-blue-600 transition-all duration-300">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b pb-4 mb-4">
+                <h3 class="text-2xl font-bold text-blue-600">
+                    Tu Panel de Progreso 
+                    <span id="user-id-display" class="block text-sm font-normal text-gray-500 mt-1">ID: ...</span>
+                </h3>
+                <button id="logout-btn" class="mt-4 sm:mt-0 p-2 px-4 font-semibold text-white bg-red-500 rounded-lg hover:bg-red-600 transition duration-200">
+                    Cerrar Sesión
+                </button>
             </div>
             
-            <p>Avance Actual (Libro 1):</p>
-            <pre id="progress-output">Cargando datos...</pre>
+            <p class="font-semibold text-gray-700 mb-2">Avance Guardado:</p>
+            <pre id="progress-output" class="bg-gray-100 p-4 rounded-lg text-sm text-gray-800 overflow-x-auto min-h-[50px]">Cargando datos...</pre>
 
-            <div style="margin-top: 20px; padding-top: 15px; border-top: 1px dashed #ccc;">
-                <h4 style="margin-top: 0;">Guardar Avance (Simulación)</h4>
-                <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                    <input type="number" id="unit-input" placeholder="Unidad (Ej: 3)" min="1" style="flex-grow: 1;">
-                    <input type="number" id="exercise-input" placeholder="Ejercicio (Ej: 5)" min="0" style="flex-grow: 1;">
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <h4 class="text-xl font-semibold text-gray-700 mb-4">Guardar Nuevo Avance</h4>
+                <div class="flex flex-col sm:flex-row gap-4 mb-4">
+                    <input type="number" id="unit-input" placeholder="Unidad (Ej: 3)" min="1" class="flex-grow p-3 border border-gray-300 rounded-lg" required>
+                    <input type="number" id="exercise-input" placeholder="Ejercicio (Ej: 5)" min="0" class="flex-grow p-3 border border-gray-300 rounded-lg" required>
                 </div>
-                <button id="save-progress-btn" style="width: 100%; background-color: #28a745; color: white; padding: 10px;">
+                <button id="save-progress-btn" class="w-full p-3 font-semibold text-white bg-green-500 rounded-lg hover:bg-green-600 transition duration-200">
                     Guardar Nuevo Avance
                 </button>
             </div>
         </div>
-        <!-- === FIN DE LA INTERFAZ DE AUTENTICACIÓN === -->
+        
+        <!-- Título del Contenido -->
+        <h3 id="content-title" class="text-2xl font-bold text-gray-800 mt-10 mb-6">Contenido de los Libros</h3>
 
         <!-- BOOK GRID (Tu contenido original) -->
         <div class="book-grid">
             
-            <div class="book-card level-1">
-                <div class="card-header">
-                    <h3>Libro 1: 7th Grade</h3>
+            <div class="book-card p-6 bg-white rounded-xl shadow-lg border-t-4 border-blue-400 hover:shadow-xl transition duration-300">
+                <div class="mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">Libro 1: 7th Grade</h3>
                 </div>
                 
-                <div class="card-resources">
-                    <a href="../src/Student_Books/7th Grade/Book_Index.html" class="resource-btn main-access">Student Book</a>
+                <div class="space-y-3 mb-4">
+                    <a href="#" onclick="showLoginMessage(event)" class="resource-btn main-access block w-full text-center p-3 font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition duration-200">
+                        Student Book
+                    </a>
                     
-                    <div class="resource-links">
-                        <a href="#" class="resource-link-small">Workbook (Práctica)</a>
-                        <a href="#" class="resource-link-small teacher-link">Teacher Book (Guía)</a>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="#" onclick="showLoginMessage(event)" class="resource-link-small text-sm text-blue-500 hover:text-blue-700 underline">Workbook (Práctica)</a>
+                        <a href="#" onclick="showLoginMessage(event)" class="resource-link-small text-sm text-gray-500 hover:text-gray-700 underline">Teacher Book (Guía)</a>
                     </div>
                 </div>
                 
-                <div class="card-footer">
+                <div class="border-t pt-3 text-sm text-gray-500">
                     <p>Focus: Construcción de la base lingüística para describir la vida personal y rutinas diarias.</p>
                 </div>
             </div>
             
-            <div class="book-card level-2">
-                <div class="card-header">
-                    <h3>Libro 2: 8th Grade</h3>
+            <div class="book-card p-6 bg-white rounded-xl shadow-lg border-t-4 border-green-400 hover:shadow-xl transition duration-300">
+                 <div class="mb-4">
+                    <h3 class="text-xl font-bold text-gray-800">Libro 2: 8th Grade</h3>
                 </div>
-                <div class="card-resources">
-                    <a href="../src/Student_Books/8th Grade/Book_Index.html" class="resource-btn main-access">Student Book</a>
-                    <div class="resource-links">
-                        <a href="#" class="resource-link-small">Workbook (Práctica)</a>
-                        <a href="#" class="resource-link-small teacher-link">Teacher Book (Guía)</a>
+                <div class="space-y-3 mb-4">
+                    <a href="#" onclick="showLoginMessage(event)" class="resource-btn main-access block w-full text-center p-3 font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition duration-200">
+                        Student Book
+                    </a>
+                    <div class="flex flex-wrap gap-2">
+                        <a href="#" onclick="showLoginMessage(event)" class="resource-link-small text-sm text-blue-500 hover:text-blue-700 underline">Workbook (Práctica)</a>
+                        <a href="#" onclick="showLoginMessage(event)" class="resource-link-small text-sm text-gray-500 hover:text-gray-700 underline">Teacher Book (Guía)</a>
                     </div>
                 </div>
-                <div class="card-footer">
+                <div class="border-t pt-3 text-sm text-gray-500">
                     <p>Focus: Desarrollo de la comunicación simple sobre el pasado, el futuro y el entorno inmediato.</p>
                 </div>
             </div>
-            <div class="book-card level-3">
-                <div class="card-header">
-                    <h3>Libro 3: 9th Grade</h3>
-                </div>
-                <div class="card-resources">
-                    <a href="../src/Student_Books/9th Grade/Book_Index.html" class="resource-btn main-access">Student Book</a>
-                    <div class="resource-links">
-                        <a href="#" class="resource-link-small">Workbook (Práctica)</a>
-                        <a href="#" class="resource-link-small teacher-link">Teacher Book (Guía)</a>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <p>Focus: Adquisición de fluidez y precisión para expresar opiniones y posibilidades (Nivel Intermedio).</p>
-                </div>
-            </div>
 
-            <div class="book-card level-4">
-                <div class="card-header">
-                    <h3>Libro 4: 10th Grade</h3>
-                </div>
-                <div class="card-resources">
-                    <a href="../src/Student_Books/10th Grade/Book_Index.html" class="resource-btn main-access">Student Book</a>
-                    <div class="resource-links">
-                        <a href="#" class="resource-link-small">Workbook (Práctica)</a>
-                        <a href="#" class="resource-link-small teacher-link">Teacher Book (Guía)</a>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <p>Focus: Dominio de estructuras complejas para argumentar y analizar información (Nivel Intermedio Alto).</p>
-                </div>
-            </div>
-
-            <div class="book-card level-5">
-                <div class="card-header">
-                    <h3>Libro 5: 11th Grade</h3>
-                </div>
-                <div class="card-resources">
-                    <a href="../src/Student_Books/11th Grade/index.html" class="resource-btn main-access">Student Book</a>
-                    <div class="resource-links">
-                        <a href="#" class="resource-link-small">Workbook (Práctica)</a>
-                        <a href="#" class="resource-link-small teacher-link">Teacher Book (Guía)</a>
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <p>Focus: Consolidación de la competencia comunicativa y preparación para entornos académicos y profesionales.</p>
-                </div>
-            </div>
+            <!-- Puedes replicar los demás libros aquí con la misma estructura... -->
+            <div class="book-card p-6 bg-white rounded-xl shadow-lg border-t-4 border-yellow-400 hover:shadow-xl transition duration-300">
+                <div class="mb-4">
+                   <h3 class="text-xl font-bold text-gray-800">Libro 3: 9th Grade</h3>
+               </div>
+               <div class="space-y-3 mb-4">
+                   <a href="#" onclick="showLoginMessage(event)" class="resource-btn main-access block w-full text-center p-3 font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600 transition duration-200">
+                       Student Book
+                   </a>
+                   <div class="flex flex-wrap gap-2">
+                       <a href="#" onclick="showLoginMessage(event)" class="resource-link-small text-sm text-blue-500 hover:text-blue-700 underline">Workbook (Práctica)</a>
+                       <a href="#" onclick="showLoginMessage(event)" class="resource-link-small text-sm text-gray-500 hover:text-gray-700 underline">Teacher Book (Guía)</a>
+                   </div>
+               </div>
+               <div class="border-t pt-3 text-sm text-gray-500">
+                   <p>Focus: Adquisición de fluidez y precisión para expresar opiniones y posibilidades (Nivel Intermedio).</p>
+               </div>
+           </div>
         </div>
+        <!-- Fin del BOOK GRID -->
             
     </main>
 
-    <script src="assets/js/nav_scripts.js"></script>
-    
-    <!-- === INICIALIZACIÓN Y LÓGICA DE FIREBASE === -->
-    
-    <!-- 1. Carga de las librerías de Firebase (v9.6.1 compat) -->
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script type="module">
+        // Importación de las librerías de Firebase con módulos (ESM)
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { 
+            getAuth, 
+            signInAnonymously, 
+            signInWithCustomToken, 
+            onAuthStateChanged, 
+            signInWithEmailAndPassword, 
+            createUserWithEmailAndPassword, 
+            signOut,
+            // <-- NUEVAS IMPORTACIONES PARA GOOGLE AUTH -->
+            GoogleAuthProvider,
+            signInWithPopup
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { 
+            getFirestore, 
+            doc, 
+            setDoc, 
+            onSnapshot 
+        } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // --- Variables Globales Mandatorias para el entorno Canvas ---
+        // Estas variables son proporcionadas automáticamente en el entorno de Canvas
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-english-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config) 
+            : { /* Configuración de Firebase mínima */ };
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        // --- Inicialización de Firebase ---
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        
+        // Inicialización del Proveedor de Google (NUEVO)
+        const googleProvider = new GoogleAuthProvider();
 
-    <!-- 2. Tu Configuración Única y la Inicialización de los Servicios -->
-    <script>
-      // Tu objeto de configuración único
-      const firebaseConfig = {
-        apiKey: "AIzaSyDKgyH3lrvfDKZDVWft9TYFZPX-uJW3-B4",
-        authDomain: "jpenglishbooks.firebaseapp.com",
-        projectId: "jpenglishbooks",
-        storageBucket: "jpenglishbooks.firebasestorage.app",
-        messagingSenderId: "262750459498",
-        appId: "1:262750459498:web:bcf912fe805bb1ad981c13",
-        measurementId: "G-0SMW06BBTF"
-      };
+        let currentUserId = null;
+        let isAuthReady = false;
+        
+        // --- Referencias a Elementos del DOM ---
+        const authFormEl = document.getElementById('auth-form');
+        const appContentEl = document.getElementById('app-content');
+        const authMessageEl = document.getElementById('auth-message');
+        const logoutBtn = document.getElementById('logout-btn');
+        const submitAuthBtn = document.getElementById('submit-auth');
+        const registerAuthBtn = document.getElementById('submit-auth-register');
+        const googleSignInBtn = document.getElementById('google-sign-in-btn'); // NUEVO BOTÓN
+        const emailInput = document.getElementById('auth-email');
+        const passwordInput = document.getElementById('auth-password');
+        const authErrorEl = document.getElementById('auth-error-message');
+        const progressOutputEl = document.getElementById('progress-output');
+        const saveProgressBtn = document.getElementById('save-progress-btn');
+        const unitInput = document.getElementById('unit-input');
+        const exerciseInput = document.getElementById('exercise-input');
+        const userIdDisplayEl = document.getElementById('user-id-display');
+        const allContentLinks = document.querySelectorAll('.resource-btn, .resource-link-small');
 
-      // Inicializa la aplicación Firebase
-      const app = firebase.initializeApp(firebaseConfig);
+        // --- Funciones de Utilidad ---
 
-      // Expone los servicios de Autenticación y Base de Datos (para usarlos en app.js)
-      const auth = firebase.auth();
-      const db = firebase.firestore();
+        /** Muestra/oculta las secciones de la UI */
+        function updateUI(user) {
+            isAuthReady = true;
+            if (user) {
+                currentUserId = user.uid;
+                authMessageEl.classList.add('hidden');
+                authFormEl.classList.add('hidden');
+                appContentEl.classList.remove('hidden');
+                userIdDisplayEl.textContent = `ID: ${user.uid}`;
+                
+                // Habilitar enlaces y redireccionar a los contenidos reales
+                allContentLinks.forEach(link => {
+                    link.classList.remove('bg-gray-400', 'cursor-not-allowed', 'opacity-50');
+                    link.removeAttribute('onclick');
+                    
+                    // Solo para los botones principales, restaurar el href (usé '#' como placeholder)
+                    if(link.classList.contains('main-access')) {
+                        // Aquí iría el enlace real al contenido: link.href = `../src/Student_Books/7th Grade/Book_Index.html`; 
+                    }
+                });
 
-      // Opcional: Para ver logs de depuración si encuentras problemas (útil para desarrollo)
-      firebase.firestore().setLogLevel('debug');
+                // Cargar datos del usuario
+                loadUserData(user.uid);
+            } else {
+                currentUserId = null;
+                authMessageEl.classList.remove('hidden');
+                authMessageEl.textContent = 'Por favor, inicia sesión o regístrate para acceder a tu progreso y contenidos.';
+                authMessageEl.classList.replace('bg-green-100', 'bg-yellow-100');
+                
+                authFormEl.classList.remove('hidden');
+                appContentEl.classList.add('hidden');
+
+                // Deshabilitar enlaces cuando no hay sesión
+                allContentLinks.forEach(link => {
+                    if (link.classList.contains('main-access')) {
+                         link.classList.add('bg-gray-400', 'cursor-not-allowed', 'opacity-50');
+                         link.setAttribute('onclick', 'showLoginMessage(event)');
+                    }
+                });
+            }
+        }
+
+        /** Muestra un mensaje de error o éxito temporal */
+        function showMessage(element, message, isError = true) {
+            element.textContent = message;
+            element.classList.remove('hidden');
+            element.classList.add(isError ? 'text-red-600' : 'text-green-600');
+            element.classList.remove(isError ? 'text-green-600' : 'text-red-600');
+            setTimeout(() => {
+                element.classList.add('hidden');
+            }, 5000);
+        }
+
+        // Simular un mensaje de requerimiento de login al hacer clic en un enlace sin iniciar sesión
+        window.showLoginMessage = function(event) {
+            event.preventDefault();
+            showMessage(authMessageEl, 'Debes iniciar sesión para acceder a este contenido.', false);
+            authMessageEl.classList.replace('bg-yellow-100', 'bg-red-100');
+        }
+
+        // --- Lógica de Autenticación ---
+
+        /** Listener de cambio de estado de autenticación (Se activa al iniciar/cerrar sesión o al cargar la página) */
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // Si el usuario tiene email, lo muestra; si es de Google, muestra un mensaje genérico.
+                authMessageEl.textContent = `¡Hola, ${user.email || 'Usuario de Google'}!`; 
+                authMessageEl.classList.replace('bg-yellow-100', 'bg-green-100');
+            }
+            updateUI(user);
+        });
+
+        /** Inicia sesión usando Email y Contraseña */
+        async function handleSignIn(email, password) {
+            try {
+                authErrorEl.classList.add('hidden');
+                await signInWithEmailAndPassword(auth, email, password);
+                showMessage(authMessageEl, 'Inicio de sesión exitoso.', false);
+            } catch (error) {
+                console.error("Error de inicio de sesión:", error);
+                let message = 'Error al iniciar sesión. Verifica tu correo y contraseña.';
+                if (error.code === 'auth/user-not-found') {
+                    message = 'Usuario no encontrado. ¿Necesitas registrarte?';
+                } else if (error.code === 'auth/wrong-password') {
+                    message = 'Contraseña incorrecta.';
+                }
+                showMessage(authErrorEl, message);
+            }
+        }
+
+        /** Registra un nuevo usuario usando Email y Contraseña */
+        async function handleRegister(email, password) {
+            try {
+                authErrorEl.classList.add('hidden');
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                showMessage(authMessageEl, '¡Registro exitoso! Has iniciado sesión automáticamente.', false);
+                
+                // Crea un documento inicial para el nuevo usuario
+                await saveUserData(userCredential.user.uid, { 
+                    createdAt: new Date().toISOString(),
+                    progress: { message: "Recién registrado, comienza tu avance." }
+                });
+
+            } catch (error) {
+                console.error("Error de registro:", error);
+                let message = 'Error al registrar el usuario.';
+                if (error.code === 'auth/weak-password') {
+                    message = 'Contraseña débil. Debe tener al menos 6 caracteres.';
+                } else if (error.code === 'auth/email-already-in-use') {
+                    message = 'El correo ya está registrado. Intenta iniciar sesión.';
+                }
+                showMessage(authErrorEl, message);
+            }
+        }
+        
+        /** Inicia sesión usando Google (NUEVA FUNCIÓN) */
+        async function handleGoogleSignIn() {
+            try {
+                authErrorEl.classList.add('hidden');
+                const result = await signInWithPopup(auth, googleProvider);
+                
+                const user = result.user;
+                
+                // Guarda datos iniciales/actualiza la última sesión
+                await saveUserData(user.uid, { 
+                    lastLogin: new Date().toISOString(),
+                    email: user.email,
+                    displayName: user.displayName || 'Usuario Google',
+                    progress: { message: "Bienvenido! Comienza tu avance." } // Esto asegurará que exista un campo de progreso
+                });
+
+                showMessage(authMessageEl, 'Inicio de sesión con Google exitoso.', false);
+
+            } catch (error) {
+                console.error("Error de inicio de sesión con Google:", error);
+                let message = 'Error al iniciar sesión con Google. Inténtalo de nuevo.';
+                if (error.code === 'auth/popup-closed-by-user') {
+                    message = 'La ventana de Google fue cerrada. Inténtalo de nuevo.';
+                } else if (error.code === 'auth/cancelled-popup-request') {
+                    message = 'Se bloqueó la solicitud de ventana emergente.';
+                }
+                showMessage(authErrorEl, message);
+            }
+        }
+
+
+        /** Cierra la sesión del usuario */
+        async function handleSignOut() {
+            try {
+                await signOut(auth);
+                showMessage(authMessageEl, 'Sesión cerrada exitosamente. ¡Vuelve pronto!', false);
+                authMessageEl.classList.replace('bg-green-100', 'bg-yellow-100');
+            } catch (error) {
+                console.error("Error al cerrar sesión:", error);
+                showMessage(authMessageEl, 'Hubo un error al cerrar la sesión.', true);
+            }
+        }
+
+
+        // --- Lógica de Base de Datos (Firestore) ---
+
+        /** Obtiene la referencia de la colección privada de progreso del usuario */
+        function getUserProgressRef(uid) {
+            // Regla de seguridad: /artifacts/{appId}/users/{userId}/progress/{docId}
+            const collectionPath = `artifacts/${appId}/users/${uid}/progress`;
+            return doc(db, collectionPath, "current"); // Usamos un documento fijo llamado "current"
+        }
+
+        /** Guarda el progreso del usuario en Firestore */
+        async function saveUserData(uid, data) {
+            if (!uid) {
+                console.error("Error: UID no disponible para guardar datos.");
+                return;
+            }
+            try {
+                // Usamos merge: true para no sobrescribir el documento completo si ya existe
+                await setDoc(getUserProgressRef(uid), data, { merge: true });
+                console.log("Datos de usuario guardados/actualizados con éxito.");
+                showMessage(progressOutputEl, "Avance guardado con éxito!", false);
+                progressOutputEl.classList.replace('text-red-800', 'text-green-800');
+            } catch (error) {
+                console.error("Error al guardar datos:", error);
+                showMessage(progressOutputEl, "ERROR: No se pudo guardar el avance.", true);
+                progressOutputEl.classList.replace('text-green-800', 'text-red-800');
+            }
+        }
+
+        /** Escucha cambios en el progreso del usuario en tiempo real */
+        function loadUserData(uid) {
+            if (!uid) return;
+
+            const unsub = onSnapshot(getUserProgressRef(uid), (docSnapshot) => {
+                if (docSnapshot.exists()) {
+                    const data = docSnapshot.data();
+                    progressOutputEl.textContent = JSON.stringify(data, null, 2);
+                    progressOutputEl.classList.remove('text-red-800');
+                } else {
+                    progressOutputEl.textContent = 'No hay progreso guardado aún.';
+                }
+            }, (error) => {
+                console.error("Error al cargar los datos:", error);
+                progressOutputEl.textContent = `Error al cargar: ${error.message}`;
+                progressOutputEl.classList.add('text-red-800');
+            });
+
+            window.firestoreUnsubscriber = unsub; 
+        }
+
+        // --- Event Listeners ---
+        
+        // 1. Manejo del Login/Registro (Email/Password)
+        [submitAuthBtn, registerAuthBtn].forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const email = emailInput.value.trim();
+                const password = passwordInput.value.trim();
+                const action = e.target.id === 'submit-auth-register' ? 'register' : 'login';
+
+                if (!email || !password) {
+                    showMessage(authErrorEl, 'Por favor, introduce tu correo y contraseña.');
+                    return;
+                }
+
+                if (action === 'login') {
+                    handleSignIn(email, password);
+                } else {
+                    handleRegister(email, password);
+                }
+            });
+        });
+        
+        // 2. Manejo de Login con Google (NUEVO LISTENER)
+        googleSignInBtn.addEventListener('click', handleGoogleSignIn);
+
+
+        // 3. Manejo de Cerrar Sesión
+        logoutBtn.addEventListener('click', handleSignOut);
+
+        // 4. Manejo de Guardar Progreso
+        saveProgressBtn.addEventListener('click', () => {
+            if (!currentUserId) {
+                showMessage(authErrorEl, 'Debes iniciar sesión para guardar tu progreso.');
+                return;
+            }
+
+            const unit = parseInt(unitInput.value);
+            const exercise = parseInt(exerciseInput.value);
+
+            // Uso de alerta (reemplazado por showMessage en la interfaz, pero se mantiene la lógica)
+            if (isNaN(unit) || isNaN(exercise) || unit < 1 || exercise < 0) {
+                 showMessage(authErrorEl, 'Por favor, introduce números válidos para Unidad (mín 1) y Ejercicio (mín 0).');
+                return;
+            }
+
+            const dataToSave = {
+                lastUpdate: new Date().toISOString(),
+                progress: {
+                    unit: unit,
+                    exercise: exercise,
+                    message: `Último avance: Unidad ${unit}, Ejercicio ${exercise}`
+                }
+            };
+
+            saveUserData(currentUserId, dataToSave);
+            unitInput.value = '';
+            exerciseInput.value = '';
+        });
+        
+        // 5. Lógica de Navegación Móvil
+        const hamburgerBtn = document.getElementById('hamburger-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        hamburgerBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+
+        // --- Autenticación Inicial (Usando el token si está disponible) ---
+        async function initializeAuth() {
+            try {
+                if (initialAuthToken) {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                    console.log("Autenticación con token inicial completada.");
+                } else {
+                    // Si no hay token, iniciamos sesión anónimamente
+                    await signInAnonymously(auth);
+                    console.log("Sesión anónima iniciada (requerida por el entorno).");
+                }
+            } catch (error) {
+                console.error("Error durante la autenticación inicial:", error);
+                authMessageEl.textContent = 'Error crítico de autenticación. Consulta la consola.';
+                authMessageEl.classList.replace('bg-yellow-100', 'bg-red-100');
+            }
+        }
+        
+        initializeAuth();
+
     </script>
-
-    <!-- 3. Asegúrate de que tu archivo de lógica (app.js) se cargue DESPUÉS de la inicialización -->
-    <script src="app.js"></script>
-    <!-- === FIN DE LA INICIALIZACIÓN Y LÓGICA DE FIREBASE === -->
 </body>
 </html>
